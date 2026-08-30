@@ -3,326 +3,1312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>陈建怡 - 个人主页</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>陈建怡 (Jianyi Chen) - 河北工业大学理学院 讲师</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            background-color: #fff;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* 顶栏固定 + 导航 + 语言切换 */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            border-bottom: 2px solid #333;
+            background: #fff;
+            z-index: 1000;
+        }
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 56px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+        }
+        .main-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 16px;
+            flex: 1;
+        }
+        .nav-item {
+            display: inline-block;
+            padding: 8px 12px;
+            color: #333;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .nav-item:hover { background-color: #f5f5f5; }
+        .nav-item.active { background-color: #333; color: #fff; }
+
+        .lang-switch {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            z-index: 1001;
+            display: flex;
+            gap: 8px;
+        }
+        .lang-btn {
+            padding: 6px 14px;
+            background: #fff;
+            color: #333;
+            border: 1px solid #333;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lang-btn:hover { background: #f5f5f5; }
+        .lang-btn.active { background: #333; color: #fff; border-color: #333; }
+
+        main { padding: 80px 0 50px; min-height: calc(100vh - 140px); }
+        .section-basic-top { margin-top: 24px; }
+
+        /* 子页面：仅当前激活的显示 */
+        .page-section {
+            display: none;
+        }
+        .page-section.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: #000;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-photo {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .profile-photo img {
+            width: 160px;
+            height: auto;
+            max-height: 220px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            display: block;
+        }
+        .profile-info { flex: 1; min-width: 0; }
+        .profile-info h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; color: #000; }
+        .profile-title { font-size: 16px; color: #666; margin-bottom: 0; }
+        .profile-contact { font-size: 14px; color: #333; margin-bottom: 6px; }
+        .profile-contact:last-of-type { margin-bottom: 0; }
+        .profile-intro-block { margin-bottom: 24px; }
+        .profile-intro-block .profile-intro { margin-bottom: 12px; text-align: justify; }
+        .profile-intro-block .profile-intro:last-child { margin-bottom: 0; }
+        .profile-expertise-title { font-size: 17px; font-weight: 600; margin: 20px 0 10px; color: #000; }
+        .profile-intro-block .list-plain { margin-top: 6px; margin-bottom: 0; }
+
+        .content-section { margin-bottom: 40px; }
+        .content-section h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #000;
+            text-align: center;
+        }
+        .content-section h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #000;
+        }
+        .content-section h4 { font-size: 15px; font-weight: 600; margin: 14px 0 8px; color: #333; }
+        .content-section p { margin-bottom: 12px; text-align: justify; }
+        .content-section ul { margin-bottom: 12px; padding-left: 22px; }
+        .content-section li { margin-bottom: 6px; }
+
+        .content-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            border-left: 4px solid #333;
+        }
+        .content-card:last-child { margin-bottom: 0; }
+        .content-card h3 { margin-top: 0; }
+        .content-card h3:not(:first-child) { margin-top: 16px; }
+        .content-card-rounded {
+            border: 1px solid #b8b8b8;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 0;
+            margin-bottom: 28px;
+        }
+        .content-card-rounded:last-child { margin-bottom: 0; }
+        .content-card-rounded .info-box-header {
+            background: #b8b8b8;
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: left;
+            padding: 10px 24px;
+            margin: 0;
+            border-bottom: 1px solid #b8b8b8;
+        }
+        .content-card-rounded .info-box-body { padding: 20px 24px; }
+        .info-box-title { font-size: 18px; margin-bottom: 20px; text-align: center; color: #000; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 32px; margin-bottom: 24px; }
+        .info-block h4 { font-size: 15px; font-weight: 600; margin: 0 0 10px 0; color: #333; padding-bottom: 6px; border-bottom: 1px solid #ddd; }
+        .info-block + .info-block { margin-top: 20px; }
+        .info-block ul.list-plain { margin: 0; }
+        .info-block .list-plain li { margin-bottom: 6px; }
+        .info-block-full { margin-top: 4px; }
+        .info-block-full h4 { margin-bottom: 10px; }
+        .info-text { margin: 0; text-align: justify; line-height: 1.75; }
+        .exp-item { margin-bottom: 22px; }
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-meta { font-weight: 600; color: #000; margin-bottom: 6px; }
+        .exp-period { color: #555; font-weight: 500; margin-right: 12px; }
+        .exp-desc { margin: 0; text-align: justify; line-height: 1.75; font-size: 14px; }
+        .exp-desc ul { margin: 0; padding-left: 20px; }
+        .exp-desc li { margin-bottom: 4px; }
+
+        .list-plain { list-style: none; padding-left: 0; }
+        .list-plain li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .list-plain li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        .interest-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        .interest-list li {
+            margin: 0;
+            padding: 14px 18px;
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-left: 4px solid #333;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .interest-list li:before { content: none; }
+        .interest-list li:hover {
+            transform: translateX(4px);
+            background: #f5f5f5;
+        }
+
+        .awards-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+        }
+        .award-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .award-item:last-child { border-bottom: none; }
+        .award-year {
+            font-weight: 600;
+            color: #333;
+            min-width: 56px;
+            flex-shrink: 0;
+        }
+        .award-name {
+            flex: 1;
+            font-weight: 500;
+            color: #000;
+            min-width: 0;
+        }
+        .award-org {
+            color: #666;
+            font-size: 13px;
+            text-align: right;
+            flex-shrink: 0;
+            max-width: 42%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th { background: #fafafa; font-weight: 600; }
+
+        .news-table {
+            margin-top: 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .news-table thead {
+            background: #333;
+            color: #fff;
+        }
+        .news-table th {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.02em;
+            border: none;
+            background: #333;
+        }
+        .news-table tbody tr {
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.15s ease;
+        }
+        .news-table tbody tr:last-child { border-bottom: none; }
+        .news-table tbody tr:hover { background-color: #f9f9f9; }
+        .news-table td {
+            padding: 14px 16px;
+            border: none;
+            border-bottom: 1px solid #eee;
+            line-height: 1.65;
+        }
+        .news-table td:first-child {
+            width: 100px;
+            min-width: 90px;
+            color: #555;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .news-table tbody tr:last-child td { border-bottom: none; }
+
+        .news-year {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000;
+            margin-top: 28px;
+            margin-bottom: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+        }
+        h2.page-title + .news-year { margin-top: 12px; }
+        p[style*="text-align:center"] + .news-year { margin-top: 16px; }
+        .news-event-card {
+            border: 1px solid #b8b8b8;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-top: 12px;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .news-event-card .news-date { font-weight: 600; color: #333; margin-bottom: 4px; }
+        .news-event-card .news-content { margin: 0; }
+        .news-event-card .news-content ul { margin: 6px 0 0 0; padding-left: 20px; }
+        .news-event-card .news-content ul.list-plain { padding-left: 20px; }
+        .news-event-card .news-content + .news-card-list { margin-top: 6px; }
+
+        .news-event-card.news-with-photo {
+            display: flex;
+            gap: 18px;
+            align-items: stretch;
+            padding: 12px;
+        }
+        .news-thumb {
+            flex-shrink: 0;
+            width: 200px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            background: #eee;
+        }
+        .news-thumb img {
+            display: block;
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+        .news-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4px 8px 4px 0;
+        }
+        .news-body .news-date { margin-bottom: 6px; }
+        .news-body .news-content { color: #333; }
+
+        .project-card {
+            border: 1px solid #b8b8b8;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            background: #fafafa;
+            line-height: 1.7;
+        }
+        .project-card h3 { font-size: 16px; margin: 0 0 10px 0; color: #000; font-weight: 600; }
+        .project-card ul { margin: 0; padding-left: 20px; }
+        .project-card li { margin-bottom: 4px; }
+        .project-card p { margin: 0 0 8px 0; }
+        .project-card p:last-child { margin-bottom: 0; }
+
+        .papers-intro { margin: 0 0 12px 0; color: #555; font-size: 14px; }
+        .paper-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            border: 1px solid #b8b8b8;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 10px;
+            background: #fafafa;
+            line-height: 1.6;
+        }
+        .paper-index {
+            flex-shrink: 0;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 6px;
+            box-sizing: border-box;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #333;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-top: 1px;
+        }
+        .paper-body { flex: 1; min-width: 0; }
+        .paper-title { font-weight: 500; color: #000; margin: 0 0 4px 0; }
+        .paper-meta { font-size: 13px; color: #555; margin: 0; }
+        .paper-venue {
+            font-weight: 600;
+            font-style: italic;
+            color: #000;
+        }
+        .patent-table-wrap { margin-top: 12px; overflow-x: auto; }
+        .patent-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            border: 1px solid #b8b8b8;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .patent-table th, .patent-table td { padding: 10px 12px; border-bottom: 1px solid #e8e8e8; text-align: left; }
+        .patent-table th { background: #f0f0f0; font-weight: 600; }
+        .patent-table tbody tr:last-child td { border-bottom: none; }
+        .patent-table td:first-child { white-space: nowrap; width: 90px; }
+        .patent-table td:nth-child(3) { white-space: nowrap; width: 120px; }
+        .patent-table td:nth-child(4) { white-space: nowrap; width: 140px; }
+
+        a { color: #0066cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .content-zh { display: block; }
+        .content-en { display: none; }
+        body.lang-en .content-zh { display: none; }
+        body.lang-en .content-en { display: block; }
+
+        .site-footer {
+            border-top: 2px solid #333;
+            padding: 18px 0;
+            margin-top: 40px;
+        }
+        .site-footer p { text-align: center; font-size: 12px; color: #666; margin: 0; }
+
+        @media (max-width: 768px) {
+            .header-inner { flex-wrap: wrap; justify-content: center; gap: 12px; }
+            .main-nav { flex: none; order: 1; width: 100%; justify-content: center; }
+            .lang-switch { right: 16px; top: 14px; }
+            .profile-header { flex-direction: column; gap: 20px; align-items: center; }
+            .profile-photo img { width: 150px; max-height: 200px; }
+            .info-grid { grid-template-columns: 1fr; gap: 20px; }
+            .news-table td:first-child { width: auto; min-width: 0; white-space: normal; }
+            .news-table th, .news-table td { padding: 10px 12px; }
+            .interest-list { grid-template-columns: 1fr; }
+            .award-item {
+                flex-wrap: wrap;
+                gap: 6px 16px;
+            }
+            .award-org {
+                width: 100%;
+                max-width: none;
+                text-align: left;
+                padding-left: 76px;
+            }
+            .news-event-card.news-with-photo {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .news-thumb {
+                width: 100%;
+            }
+            .news-thumb img {
+                height: 180px;
+            }
+            .news-body { padding: 0 4px 4px; }
+        }
+        @media (max-width: 900px) and (min-width: 769px) {
+            .interest-list { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="nav-link">首页</a>
-            <a href="#about" class="nav-link">关于我</a>
-            <a href="#education" class="nav-link">教育经历</a>
-            <a href="#research" class="nav-link">研究成果</a>
-            <a href="#projects" class="nav-link">项目经历</a>
-            <a href="#internships" class="nav-link">实习经历</a>
-            <a href="#others" class="nav-link">其他</a>
-        </div>
-    </nav>
-
-    <!-- 主页头部 -->
-    <header id="home" class="header">
-        <div class="header-content">
-            <h1 class="name">陈建怡</h1>
-            <p class="title">博士</p>
-            <p class="affiliation">北京理工大学 & 庆应义塾大学</p>
-            <p class="field">应用数学</p>
+    <header class="site-header">
+        <div class="header-inner">
+            <nav class="main-nav">
+                <a href="#basic" class="nav-item active" data-page="basic" data-zh="基本信息" data-en="Basic Info">基本信息</a>
+                <a href="#news" class="nav-item" data-page="news" data-zh="最新动态" data-en="News">最新动态</a>
+                <a href="#projects" class="nav-item" data-page="projects" data-zh="项目与荣誉" data-en="Projects & Honors">项目与荣誉</a>
+                <a href="#papers" class="nav-item" data-page="papers" data-zh="论文与专利" data-en="Papers & Patents">论文与专利</a>
+                <a href="#experience" class="nav-item" data-page="experience" data-zh="实习与实践" data-en="Experience">实习与实践</a>
+            </nav>
         </div>
     </header>
+    <div class="lang-switch">
+        <button class="lang-btn active" id="btn-zh" aria-label="中文">中文</button>
+        <button class="lang-btn" id="btn-en" aria-label="English">English</button>
+    </div>
 
-    <!-- 关于我部分 -->
-    <section id="about" class="section">
+    <main>
         <div class="container">
-            <h2 class="section-title">关于我</h2>
-            <div class="about-content">
-                <div class="about-main-wrapper">
-                    <!-- 左侧图片轮播 -->
-                    <div class="gallery-wrapper">
-                        <div class="gallery-container">
-                            <div class="gallery-slider" id="gallerySlider">
-                                <!-- 图片将通过JavaScript动态添加 -->
-                            </div>
-                            <button class="gallery-nav prev" id="prevBtn">❮</button>
-                            <button class="gallery-nav next" id="nextBtn">❯</button>
-                            <!-- 轮播指示点 -->
-                            <div class="gallery-dots" id="galleryDots"></div>
+            <!-- 1. 基本信息 -->
+            <section id="section-basic" class="page-section active">
+                <div class="content-zh">
+                    <div class="profile-header section-basic-top">
+                        <div class="profile-photo">
+                            <img src="profile.jpg" alt="陈建怡" title="陈建怡 (Jianyi Chen)">
+                        </div>
+                        <div class="profile-info">
+                            <h1>陈建怡 (Jianyi Chen)</h1>
+                            <p class="profile-title">讲师 · 应用数学</p>
+                            <p class="profile-contact" style="margin-top: 8px;"><strong>单位：</strong>河北工业大学 · 理学院</p>
+                            <p class="profile-contact"><strong>邮箱：</strong> <a href="mailto:15030218436@163.com">15030218436@163.com</a></p>
+                            <p class="profile-contact"><strong>谷歌学术：</strong> <a href="https://scholar.google.com/citations?user=m2oUEgwAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener">Google Scholar</a></p>
+                            <p class="profile-contact"><strong>知乎：</strong> <a href="https://www.zhihu.com/people/20b98a5c146bbfabc42c9c10bf96bc93" target="_blank" rel="noopener">知乎主页</a></p>
                         </div>
                     </div>
-                    <!-- 右侧文字介绍 -->
-                    <div class="about-text-section">
-                        <p class="about-text">
-                            我叫陈建怡，现为北京理工大学数学与统计学院应用数学专业的2022级博士研究生，主要研究方向为信号处理中的数学方法。在博士期间，我亦作为国家留学基金委资助的联合培养博士赴日本庆应义塾大学开展为期一年的合作研究，聚焦于信息几何在信号处理中的应用。多年的学习与科研训练使我具备扎实的数学理论基础、较强的科研创新能力以及良好的跨学科适应能力。在信号处理主线之外，我也主动拓展至图学习、深度模型、谱分析、目标检测等多个交叉领域，积累了多维度的研究经验。
-                        </p>
-                        <p class="about-text">
-                            截至目前，我以第一作者在《IEEETransactionsonSignalProcessing》、《SignalProcessing》、《DigitalSignalProcessing》等国际期刊发表SCI论文8篇，另有发明专利1项获授权。并且我参与多项国家级科研课题，具备较强的独立科研能力与系统性思维。在团队协作过程中，我不仅承担核心任务，也积极参与方案讨论与成果整合，具有良好的沟通能力与协作精神。
-                        </p>
-                        <div class="contact-links">
-                            <a href="mailto:jianyi-chen@keio.jp" class="contact-link">📧 邮箱</a>
-                            <a href="陈建怡+博士+北京理工大学&庆应义塾大学+应用数学.pdf" target="_blank" class="contact-link">📄 简历</a>
-                            <a href="https://scholar.google.com/citations?user=m2oUEgwAAAAJ&hl=zh-CN&oi=sra" target="_blank" rel="noopener noreferrer" class="contact-link">🔗 谷歌学术</a>
-                            <a href="https://www.zhihu.com/people/20b98a5c146bbfabc42c9c10bf96bc93" target="_blank" rel="noopener noreferrer" class="contact-link">📝 知乎主页</a>
+                    <div class="profile-intro-block">
+                        <p class="profile-intro">我是河北工业大学理学院讲师，博士毕业于北京理工大学应用数学专业，主要研究方向为图信号处理、时频分析与信息几何。博士期间曾作为国家公派联合培养博士赴日本庆应义塾大学开展合作研究，并持续拓展至目标检测、多智能体编排与机器学习等交叉方向。</p>
+                    </div>
+                    <h3 class="news-year">研究兴趣</h3>
+                    <ul class="interest-list">
+                        <li>图信号处理</li>
+                        <li>时频分析</li>
+                        <li>分数域傅里叶变换</li>
+                        <li>信息几何在目标检测中的应用</li>
+                        <li>多agent编排的Benchmark</li>
+                        <li>机器学习与深度学习</li>
+                    </ul>
+                    <h3 class="news-year">工作经历</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2026.08 – 至今 · 讲师</p>
+                        <p class="news-content">河北工业大学 · 理学院</p>
+                    </div>
+                    <h3 class="news-year">教育经历</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2022.09 – 2026.06 · 博士研究生 · 应用数学</p>
+                        <p class="news-content">北京理工大学 · 数学与统计学院<br><strong>导师：</strong>李炳照 &nbsp;|&nbsp; <strong>研究方向：</strong>信号处理、时频分析、线性正则变换、图信号处理</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2024.12 – 2025.12 · 联合培养博士 · 应用数学</p>
+                        <p class="news-content">日本庆应义塾大学 · 机械工程系<br><strong>导师：</strong>彭林玉 &nbsp;|&nbsp; <strong>研究方向：</strong>信息几何在信号处理中的应用</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2020.09 – 2022.06 · 硕士研究生 · 应用统计</p>
+                        <p class="news-content">北京理工大学 · 数学与统计学院<br><strong>导师：</strong>李炳照 &nbsp;|&nbsp; <strong>研究方向：</strong>机器学习、深度学习、信号处理</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2016.09 – 2020.06 · 本科 · 信息与计算科学专业双学位班</p>
+                        <p class="news-content">河北工业大学 · 理学院<br>GPA: 3.65/4.0。获得理学院十佳大学生、河北省优秀毕业生等荣誉称号，后保研至北京理工大学。</p>
+                    </div>
+                </div>
+                <div class="content-en">
+                    <div class="profile-header section-basic-top">
+                        <div class="profile-photo">
+                            <img src="profile.jpg" alt="Jianyi Chen" title="Jianyi Chen (陈建怡)">
+                        </div>
+                        <div class="profile-info">
+                            <h1>Jianyi Chen (陈建怡)</h1>
+                            <p class="profile-title">Lecturer · Applied Mathematics</p>
+                            <p class="profile-contact" style="margin-top: 8px;"><strong>Affiliation:</strong> School of Science, Hebei University of Technology</p>
+                            <p class="profile-contact"><strong>Email:</strong> <a href="mailto:15030218436@163.com">15030218436@163.com</a></p>
+                            <p class="profile-contact"><strong>Google Scholar:</strong> <a href="https://scholar.google.com/citations?user=m2oUEgwAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a></p>
+                            <p class="profile-contact"><strong>Zhihu:</strong> <a href="https://www.zhihu.com/people/20b98a5c146bbfabc42c9c10bf96bc93" target="_blank" rel="noopener">Zhihu</a></p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 教育经历部分 -->
-    <section id="education" class="section">
-        <div class="container">
-            <h2 class="section-title">教育经历</h2>
-            <div class="education-list">
-                <div class="education-item">
-                    <div class="education-header">
-                        <h3 class="education-degree">博士研究生 · 应用数学</h3>
-                        <span class="education-period">2022.09 - 2026.06</span>
+                    <div class="profile-intro-block">
+                        <p class="profile-intro">I am a Lecturer at the School of Science, Hebei University of Technology. I received my Ph.D. in Applied Mathematics from Beijing Institute of Technology, with research interests in graph signal processing, time-frequency analysis, and information geometry. During my doctoral studies, I was a CSC-funded joint Ph.D. student at Keio University, Japan, and have also worked across target detection, multi-agent orchestration, and machine learning.</p>
                     </div>
-                    <p class="education-school">北京理工大学 · 数学与统计学院</p>
-                    <p class="education-supervisor">导师：李炳照</p>
-                    <p class="education-research">研究方向：信号处理、时频分析、线性正则变换、图信号处理</p>
-                </div>
-
-                <div class="education-item">
-                    <div class="education-header">
-                        <h3 class="education-degree">联合培养博士 · 应用数学</h3>
-                        <span class="education-period">2024.12 - 2025.12</span>
+                    <h3 class="news-year">Research Interests</h3>
+                    <ul class="interest-list">
+                        <li>Graph Signal Processing</li>
+                        <li>Time-Frequency Analysis</li>
+                        <li>Fractional Fourier Transform</li>
+                        <li>Information Geometry for Target Detection</li>
+                        <li>Multi-Agent Orchestration Benchmarks</li>
+                        <li>Machine Learning and Deep Learning</li>
+                    </ul>
+                    <h3 class="news-year">Work Experience</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2026.08 – Present · Lecturer</p>
+                        <p class="news-content">Hebei University of Technology, School of Science</p>
                     </div>
-                    <p class="education-school">日本庆应义塾大学 · 机械工程系</p>
-                    <p class="education-supervisor">导师：彭林玉</p>
-                    <p class="education-research">研究方向：信息几何在信号处理中的应用</p>
-                </div>
-
-                <div class="education-item">
-                    <div class="education-header">
-                        <h3 class="education-degree">硕士研究生 · 应用统计</h3>
-                        <span class="education-period">2020.09 - 2022.06</span>
+                    <h3 class="news-year">Education</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2022.09 – 2026.06 · Ph.D. · Applied Mathematics</p>
+                        <p class="news-content">Beijing Institute of Technology, School of Mathematics and Statistics<br><strong>Advisor:</strong> Bing-Zhao Li &nbsp;|&nbsp; <strong>Research:</strong> signal processing, time-frequency analysis, linear canonical transform, graph signal processing</p>
                     </div>
-                    <p class="education-school">北京理工大学 · 数学与统计学院</p>
-                    <p class="education-supervisor">导师：李炳照</p>
-                    <p class="education-research">研究方向：机器学习、深度学习、信号处理</p>
-                </div>
-
-                <div class="education-item">
-                    <div class="education-header">
-                        <h3 class="education-degree">本科 · 信息与计算科学专业双学位班</h3>
-                        <span class="education-period">2016.09 - 2020.06</span>
+                    <div class="news-event-card">
+                        <p class="news-date">2024.12 – 2025.12 · Joint Ph.D. · Applied Mathematics</p>
+                        <p class="news-content">Keio University, Department of Mechanical Engineering, Japan<br><strong>Advisor:</strong> Lin-Yu Peng &nbsp;|&nbsp; <strong>Research:</strong> information geometry in signal processing</p>
                     </div>
-                    <p class="education-school">河北工业大学 · 理学院</p>
-                    <p class="education-gpa">GPA: 3.65/4.0</p>
-                    <p class="education-honors">获得理学院十佳大学生、河北省优秀毕业生等荣誉称号，后保研至北京理工大学</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 研究部分 -->
-    <section id="research" class="section">
-        <div class="container">
-            <h2 class="section-title">研究成果</h2>
-            
-            <!-- 研究兴趣 -->
-            <div class="research-interests">
-                <h3 class="subsection-title">研究兴趣</h3>
-                <ul class="interest-list">
-                    <li>信号处理</li>
-                    <li>时频分析</li>
-                    <li>线性正则变换</li>
-                    <li>图信号处理</li>
-                    <li>信息几何</li>
-                    <li>机器学习与深度学习</li>
-                </ul>
-            </div>
-
-            <!-- 学术成果 -->
-            <div class="publications">
-                <h3 class="subsection-title">
-                    学术成果 
-                </h3>
-                <div class="publication-controls">
-                    <button class="sort-btn active" data-sort="time">按时间</button>
-                    <button class="sort-btn" data-sort="topic">按主题</button>
-                </div>
-                
-                <div class="publication-list" id="publicationList">
-                    <!-- 学术成果将通过JavaScript动态添加 -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 项目经历部分 -->
-    <section id="projects" class="section">
-        <div class="container">
-            <h2 class="section-title">项目经历</h2>
-            <div class="project-list">
-                <div class="project-item">
-                    <div class="project-header">
-                        <span class="project-type">国家自然科学基金面上项目</span>
-                        <span class="project-period">2026.01 - 2029.12</span>
+                    <div class="news-event-card">
+                        <p class="news-date">2020.09 – 2022.06 · M.S. · Applied Statistics</p>
+                        <p class="news-content">Beijing Institute of Technology, School of Mathematics and Statistics<br><strong>Advisor:</strong> Bing-Zhao Li &nbsp;|&nbsp; <strong>Research:</strong> machine learning, deep learning, signal processing</p>
                     </div>
-                    <h4 class="project-title">基于黎曼流形线性正则变换的海杂波抑制与目标检测方法研究</h4>
-                    <p class="project-description">
-                        聚焦信息几何与信号处理的交叉领域，开展黎曼流形下线性正则变换的理论与应用研究。主要负责理论创新与算法设计研究工作。
-                    </p>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-header">
-                        <span class="project-type">国家自然科学基金面上项目</span>
-                        <span class="project-period">2022.01 - 2025.12</span>
+                    <div class="news-event-card">
+                        <p class="news-date">2016.09 – 2020.06 · B.S. · Information and Computing Science (Double-Degree Class)</p>
+                        <p class="news-content">Hebei University of Technology, School of Science<br>GPA: 3.65/4.0. Honors include Top Ten Student of the School of Science and Outstanding Graduate of Hebei Province; admitted to BIT via recommendation.</p>
                     </div>
-                    <h4 class="project-title">图分数阶傅里叶变换的理论与方法研究</h4>
-                    <p class="project-description">
-                        聚焦图信号处理的交叉领域，融合基础数学原理与信号处理技术。主要负责理论创新与算法设计研究工作。
-                    </p>
                 </div>
+            </section>
 
-                <div class="project-item">
-                    <div class="project-header">
-                        <span class="project-type">国家重点研发计划</span>
-                        <span class="project-period">2020.12 - 2023.11</span>
+            <!-- 2. 最新动态 -->
+            <section id="section-news" class="page-section">
+                <div class="content-zh">
+                    <h2 class="page-title">最新动态</h2>
+                    <h3 class="news-year">2026</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/iwagrt-2026.jpg" alt="IWAGRT 2026">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">7月21日–26日 · 四川南充</p>
+                            <p class="news-content">参加 2026 International Workshop on Applied Geometry and Related Topics（IWAGRT 2026），作报告：<em>MACRO: A Benchmark for Clarification-Aware Multi-Agent Orchestration</em>。</p>
+                        </div>
                     </div>
-                    <h4 class="project-title">全民健身信息服务平台关键技术的研究</h4>
-                    <p class="project-description">
-                        聚焦多层次全民健身服务评价的挑战，主要开展指标体系构建、评价模型与指标设计、系统开发等研究工作。负责整体规划与研发工作。
-                    </p>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/luojia-2026.jpg" alt="第七届珞珈数学博士生论坛">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">4月18日–19日 · 武汉大学雷军科技楼</p>
+                            <p class="news-content">参加武汉大学「第七届珞珈数学博士生论坛」，作报告：<em>Volume Discrepancy Measures on HPD Manifolds for Robust Target Detection</em>。</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">2025</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/gnw-2025.jpg" alt="GlobalNet Workshop 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">9月 · 日本冈山</p>
+                            <p class="news-content">参加 GlobalNet Workshop（GNW 2025）。</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/iwagrt-2025.jpg" alt="IWAGRT 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">7月 · 日本川崎</p>
+                            <p class="news-content">参加 International Workshop on Applied Geometry and Related Topics（IWAGRT 2025）。</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/beijing-workshop-2025.jpg" alt="Applied Math Workshop 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">7月 · 中国北京</p>
+                            <p class="news-content">参加 Applied Math Workshop。</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2025</p>
+                        <p class="news-content">获北京理工大学<strong>费振勇奖学金</strong>、<strong>优秀学生标兵</strong>。</p>
+                    </div>
+                    <h3 class="news-year">2024</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">12月</p>
+                        <p class="news-content">作为国家留学基金委资助的联合培养博士，赴日本庆应义塾大学机械工程系开展为期一年的合作研究，合作导师彭林玉。</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2024</p>
+                        <p class="news-content">第一作者论文发表于 <em>IEEE Transactions on Signal Processing</em>；获<strong>研究生国家奖学金</strong>，并获<strong>国家公派留学资格</strong>。</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">4月</p>
+                        <p class="news-content">发明专利「一种运动过程中异常心电信号的识别方法」获授权（ZL202210114479.6）。</p>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/ivsp-2024.jpg" alt="IVSP 2024">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">3月 · 日本生田</p>
+                            <p class="news-content">参加 IVSP 2024。</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">2023</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/icsps-2023.jpg" alt="ICSPS 2023">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">11月 · 中国西安</p>
+                            <p class="news-content">参加 ICSPS 2023。</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2023</p>
+                        <p class="news-content">获北京交叉科学学会<strong>优秀墙报奖</strong>；获中国研究生数学建模竞赛荣誉证书。</p>
+                    </div>
                 </div>
-
-                <div class="project-item">
-                    <div class="project-header">
-                        <span class="project-type">校企合作项目</span>
-                        <span class="project-period">2019.11 - 2020.12</span>
+                <div class="content-en">
+                    <h2 class="page-title">Latest News</h2>
+                    <h3 class="news-year">2026</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/iwagrt-2026.jpg" alt="IWAGRT 2026">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Jul 21–26 · Nanchong, Sichuan</p>
+                            <p class="news-content">Presented at the 2026 International Workshop on Applied Geometry and Related Topics (IWAGRT 2026): <em>MACRO: A Benchmark for Clarification-Aware Multi-Agent Orchestration</em>.</p>
+                        </div>
                     </div>
-                    <h4 class="project-title">大港油田原油含水率监测与测量模型研究</h4>
-                    <p class="project-description">
-                        该项目分析了含水率数据的周期性，对其频域特征进行分类提取，然后进行多项式拟合。最后构建了基于移动平均和动态正则化算法的异常检测与预测模型。
-                    </p>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/luojia-2026.jpg" alt="The 7th Luojia Mathematics Doctoral Forum">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Apr 18–19 · Lei Jun Science and Technology Building, Wuhan University</p>
+                            <p class="news-content">Presented at the 7th Luojia Mathematics Doctoral Forum, Wuhan University: <em>Volume Discrepancy Measures on HPD Manifolds for Robust Target Detection</em>.</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">2025</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/gnw-2025.jpg" alt="GlobalNet Workshop 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Sep · Okayama, Japan</p>
+                            <p class="news-content">Attended the GlobalNet Workshop (GNW 2025).</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/iwagrt-2025.jpg" alt="IWAGRT 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Jul · Kawasaki, Japan</p>
+                            <p class="news-content">Attended the International Workshop on Applied Geometry and Related Topics (IWAGRT 2025).</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/beijing-workshop-2025.jpg" alt="Applied Math Workshop 2025">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Jul · Beijing, China</p>
+                            <p class="news-content">Attended the Applied Math Workshop.</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2025</p>
+                        <p class="news-content">Received the <strong>Fei Zhenyong Scholarship</strong> and the title of <strong>Outstanding Student Role Model</strong> at Beijing Institute of Technology.</p>
+                    </div>
+                    <h3 class="news-year">2024</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">Dec</p>
+                        <p class="news-content">Began a one-year CSC-funded joint Ph.D. at the Department of Mechanical Engineering, Keio University, Japan, with advisor Lin-Yu Peng.</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2024</p>
+                        <p class="news-content">First-author paper published in <em>IEEE Transactions on Signal Processing</em>; received the <strong>National Scholarship for Graduate Students</strong> and CSC overseas study qualification.</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">Apr</p>
+                        <p class="news-content">Invention patent “A method for identifying abnormal ECG signals during motion” granted (ZL202210114479.6).</p>
+                    </div>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/ivsp-2024.jpg" alt="IVSP 2024">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Mar · Ikuta, Japan</p>
+                            <p class="news-content">Attended IVSP 2024.</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">2023</h3>
+                    <div class="news-event-card news-with-photo">
+                        <div class="news-thumb">
+                            <img src="images/icsps-2023.jpg" alt="ICSPS 2023">
+                        </div>
+                        <div class="news-body">
+                            <p class="news-date">Nov · Xi'an, China</p>
+                            <p class="news-content">Attended ICSPS 2023.</p>
+                        </div>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2023</p>
+                        <p class="news-content">Received the <strong>Outstanding Poster Award</strong> from the Beijing Interdisciplinary Science Society, and an honor certificate from the China Graduate Mathematical Contest in Modeling.</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- 实习经历部分 -->
-    <section id="internships" class="section">
-        <div class="container">
-            <h2 class="section-title">实习经历</h2>
-            <div class="internship-list">
-                <div class="internship-item">
-                    <div class="internship-header">
-                        <div class="internship-company">北京世纪未来教育科技有限公司</div>
-                        <span class="internship-period">2021.01 - 2021.09</span>
+            <!-- 3. 项目与荣誉 -->
+            <section id="section-projects" class="page-section">
+                <div class="content-zh">
+                    <h2 class="page-title">项目与荣誉</h2>
+                    <h3 class="news-year">项目经历</h3>
+                    <div class="project-card">
+                        <h3>基于黎曼流形线性正则变换的海杂波抑制与目标检测方法研究</h3>
+                        <p><strong>类型：</strong>国家自然科学基金面上项目 &nbsp;|&nbsp; <strong>时间：</strong>2026.01 – 2029.12</p>
+                        <p>聚焦信息几何与信号处理的交叉领域，开展黎曼流形下线性正则变换的理论与应用研究。主要负责理论创新与算法设计研究工作。</p>
                     </div>
-                    <div class="internship-role">算法实习生</div>
-                    <ul class="internship-description">
-                        <li>从事知识追踪领域的算法研究，重点在于使用EM算法和MCMC方法推导并实现IRT与DINA模型。</li>
-                        <li>同时，深入学习基于深度学习的前沿知识追踪方法，并成功复现EKT模型以评估学生知识状态，实现网络教育流量分层业务需求建模。</li>
+                    <div class="project-card">
+                        <h3>图分数阶傅里叶变换的理论与方法研究</h3>
+                        <p><strong>类型：</strong>国家自然科学基金面上项目 &nbsp;|&nbsp; <strong>时间：</strong>2022.01 – 2025.12</p>
+                        <p>聚焦图信号处理的交叉领域，融合基础数学原理与信号处理技术。主要负责理论创新与算法设计研究工作。</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>全民健身信息服务平台关键技术的研究</h3>
+                        <p><strong>类型：</strong>国家重点研发计划 &nbsp;|&nbsp; <strong>时间：</strong>2020.12 – 2023.11</p>
+                        <p>聚焦多层次全民健身服务评价的挑战，主要开展指标体系构建、评价模型与指标设计、系统开发等研究工作。负责整体规划与研发工作。</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>大港油田原油含水率监测与测量模型研究</h3>
+                        <p><strong>类型：</strong>校企合作项目 &nbsp;|&nbsp; <strong>时间：</strong>2019.11 – 2020.12</p>
+                        <p>该项目分析了含水率数据的周期性，对其频域特征进行分类提取，然后进行多项式拟合。最后构建了基于移动平均和动态正则化算法的异常检测与预测模型。</p>
+                    </div>
+                    <h3 class="news-year">奖项与荣誉</h3>
+                    <ul class="awards-list">
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">北京市优秀毕业生</span>
+                            <span class="award-org">北京市</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">育苗基金</span>
+                            <span class="award-org">河北工业大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">品学兼优榜样</span>
+                            <span class="award-org">北京理工大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">华瑞世纪奖学金</span>
+                            <span class="award-org">河北工业大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">费振勇奖学金</span>
+                            <span class="award-org">北京理工大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">优秀学生标兵</span>
+                            <span class="award-org">北京理工大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2024</span>
+                            <span class="award-name">研究生国家奖学金</span>
+                            <span class="award-org">北京理工大学</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2024</span>
+                            <span class="award-name">国家公派留学资格</span>
+                            <span class="award-org">国家留学基金委</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2023</span>
+                            <span class="award-name">优秀墙报奖</span>
+                            <span class="award-org">北京交叉科学学会</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2023</span>
+                            <span class="award-name">研究生数学建模竞赛荣誉证书</span>
+                            <span class="award-org">中国研究生数学建模竞赛组委会</span>
+                        </li>
                     </ul>
                 </div>
-
-                <div class="internship-item">
-                    <div class="internship-header">
-                        <div class="internship-company">中国软件国际有限公司</div>
-                        <span class="internship-period">2020.09 - 2020.11</span>
+                <div class="content-en">
+                    <h2 class="page-title">Projects &amp; Honors</h2>
+                    <h3 class="news-year">Projects</h3>
+                    <div class="project-card">
+                        <h3>Sea Clutter Suppression and Target Detection via Linear Canonical Transform on Riemannian Manifolds</h3>
+                        <p><strong>Type:</strong> NSFC General Program &nbsp;|&nbsp; <strong>Period:</strong> 2026.01 – 2029.12</p>
+                        <p>Research at the intersection of information geometry and signal processing, developing theory and applications of the linear canonical transform on Riemannian manifolds. Responsible for theoretical innovation and algorithm design.</p>
                     </div>
-                    <div class="internship-role">数据分析实习生</div>
-                    <ul class="internship-description">
-                        <li>主要参与开发"纽约出租车大数据分析系统"，负责数据库查询与处理、MapReduce计算、Echarts可视化分析、前端搭建以及任务协调等工作。</li>
+                    <div class="project-card">
+                        <h3>Theory and Methods of the Graph Fractional Fourier Transform</h3>
+                        <p><strong>Type:</strong> NSFC General Program &nbsp;|&nbsp; <strong>Period:</strong> 2022.01 – 2025.12</p>
+                        <p>Research at the intersection of graph signal processing, combining fundamental mathematics with signal processing techniques. Responsible for theoretical innovation and algorithm design.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Key Technologies for a National Fitness Information Service Platform</h3>
+                        <p><strong>Type:</strong> National Key R&amp;D Program &nbsp;|&nbsp; <strong>Period:</strong> 2020.12 – 2023.11</p>
+                        <p>Addressed multi-level evaluation of national fitness services, including indicator systems, evaluation models, and system development. Responsible for overall planning and R&amp;D.</p>
+                    </div>
+                    <div class="project-card">
+                        <h3>Crude Oil Water-Cut Monitoring and Measurement Models for Dagang Oilfield</h3>
+                        <p><strong>Type:</strong> University–Industry Collaboration &nbsp;|&nbsp; <strong>Period:</strong> 2019.11 – 2020.12</p>
+                        <p>Analyzed periodicity of water-cut data, extracted frequency-domain features, and applied polynomial fitting. Built anomaly detection and prediction models based on moving average and dynamic regularization.</p>
+                    </div>
+                    <h3 class="news-year">Awards &amp; Honors</h3>
+                    <ul class="awards-list">
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">Outstanding Graduate of Beijing</span>
+                            <span class="award-org">Beijing Municipality</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">Seedling Fund</span>
+                            <span class="award-org">Hebei University of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2026</span>
+                            <span class="award-name">Model of Excellence in Character and Learning</span>
+                            <span class="award-org">Beijing Institute of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">Huarui Century Scholarship</span>
+                            <span class="award-org">Hebei University of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">Fei Zhenyong Scholarship</span>
+                            <span class="award-org">Beijing Institute of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2025</span>
+                            <span class="award-name">Outstanding Student Role Model</span>
+                            <span class="award-org">Beijing Institute of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2024</span>
+                            <span class="award-name">National Scholarship for Graduate Students</span>
+                            <span class="award-org">Beijing Institute of Technology</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2024</span>
+                            <span class="award-name">CSC Overseas Study Qualification</span>
+                            <span class="award-org">China Scholarship Council</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2023</span>
+                            <span class="award-name">Outstanding Poster Award</span>
+                            <span class="award-org">Beijing Interdisciplinary Science Society</span>
+                        </li>
+                        <li class="award-item">
+                            <span class="award-year">2023</span>
+                            <span class="award-name">Honor Certificate, China Graduate Mathematical Contest in Modeling</span>
+                            <span class="award-org">CGMCM Committee</span>
+                        </li>
                     </ul>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- 其他部分 -->
-    <section id="others" class="section">
-        <div class="container">
-            <h2 class="section-title">其他</h2>
-
-            <!-- 奖项与荣誉 -->
-            <div class="subsection">
-                <h3 class="subsection-title">奖项与荣誉</h3>
-                <ul class="awards-list">
-                    <li class="award-item">
-                        <span class="award-year">2025</span>
-                        <span class="award-name">费振勇奖学金</span>
-                        <span class="award-org">北京理工大学</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2025</span>
-                        <span class="award-name">优秀学生标兵</span>
-                        <span class="award-org">北京理工大学</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2024</span>
-                        <span class="award-name">研究生国家奖学金</span>
-                        <span class="award-org">北京理工大学</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2024</span>
-                        <span class="award-name">优秀学生</span>
-                        <span class="award-org">北京理工大学</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2024</span>
-                        <span class="award-name">国家公派留学资格</span>
-                        <span class="award-org">国家留学基金委</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2023</span>
-                        <span class="award-name">优秀墙报奖</span>
-                        <span class="award-org">北京交叉科学学会</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2023</span>
-                        <span class="award-name">优秀志愿者</span>
-                        <span class="award-org">北京交叉科学学会</span>
-                    </li>
-                    <li class="award-item">
-                        <span class="award-year">2023</span>
-                        <span class="award-name">研究生数学建模竞赛荣誉证书</span>
-                        <span class="award-org">中国研究生数学建模竞赛组委会</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 实践经历 -->
-            <div class="subsection">
-                <h3 class="subsection-title">实践经历</h3>
-                <div class="practice-list">
-                    <div class="practice-item">
-                        <div class="practice-header">
-                            <div class="practice-role">AIESEC·国际志愿者</div>
-                            <span class="practice-period">2017.01 - 2017.03</span>
+            <!-- 4. 论文与专利 -->
+            <section id="section-papers" class="page-section">
+                <div class="content-zh">
+                    <h2 class="page-title">论文与专利</h2>
+                    <h3 class="news-year">学术论文</h3>
+                    <p class="papers-intro">以第一作者在 <em>IEEE Transactions on Signal Processing</em>、<em>IEEE Transactions on Signal and Information Processing over Networks</em>、<em>Journal of the Franklin Institute</em>、<em>Signal Processing</em> 等期刊发表论文 10 篇，另有会议论文 2 篇。全部论文见 <a href="https://scholar.google.com/citations?user=m2oUEgwAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener">Google Scholar</a>。</p>
+                    <div class="paper-item">
+                        <span class="paper-index">1</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Graph linear canonical transform: Definition, vertex-frequency analysis and filter design</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong>, Yu Zhang and Bing-Zhao Li. <span class="paper-venue">IEEE Transactions on Signal Processing</span>, 2024, 72: 5691-5707.</p>
                         </div>
-                        <p class="practice-description">
-                            曾前往阿塞拜疆首都巴库，参与 AIESEC 国际志愿者项目"TEACH MY OWN LANGUAGE"。
-                        </p>
                     </div>
-
-                    <div class="practice-item">
-                        <div class="practice-header">
-                            <div class="practice-role">数学建模协会主席</div>
-                            <span class="practice-period">2018.09 - 2018.12</span>
+                    <div class="paper-item">
+                        <span class="paper-index">2</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Hyper-differential operator-based graph fractional Fourier transform: Novel approaches and applications</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">IEEE Transactions on Signal and Information Processing over Networks</span>, 2026, 12: 411-423.</p>
                         </div>
-                        <p class="practice-description">
-                            协助教师组织竞赛、提供课程培训并进行线上宣传；负责协调管理协会各部门的整体运营。
-                        </p>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">3</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Operator-based graph linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Journal of the Franklin Institute</span>, 2025, 362: 107877.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">4</span>
+                        <div class="paper-body">
+                            <p class="paper-title">The short-time Wigner-Ville distribution</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Signal Processing</span>, 2024, 219: 109402.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">5</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Wigner distribution associated with linear canonical transform of generalized 2-D analitic signals</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Digital Signal Processing</span>, 2024, 149: 104481.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">6</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Multi-dimensional graph linear canonical transform and Its Application</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Digital Signal Processing</span>, 2025, 163: 105222.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">7</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Parametric quaternion Wigner-Ville distribution: Definition, uncertainty principles, and application</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Signal, Image and Video Processing</span>, 2025, 19(5): 359.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">8</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Parametric monogenic linear canonical wavelet transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Circuits, Systems, and Signal Processing</span>, 44: 7070-7091.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">9</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Graph fractional Hilbert transform, analytic signal, and its application to ECG classification</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Circuits, Systems, and Signal Processing</span>, 2026. (ONLINE)</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">10</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Fast numerical calculation of the offset linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">J. Opt. Soc. Am. A</span>, 2023, 40: 427-442.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">11</span>
+                        <div class="paper-body">
+                            <p class="paper-title">The short-time Wigner-Ville distribution associated with linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. In Proceedings of <span class="paper-venue">ICSPS 2023</span>, Xi'an, China, 5 pages.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">12</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Riesz transform associated with the linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. In Proceedings of <span class="paper-venue">IVSP 2024</span>, Ikuta, Japan, 7 pages.</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">专利</h3>
+                    <p class="papers-intro">发明专利 1 项获授权，另有 1 项已申请。</p>
+                    <div class="patent-table-wrap">
+                        <table class="patent-table">
+                            <thead>
+                                <tr><th>日期</th><th>专利名称</th><th>专利编号</th><th>发明人</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>2024.04.09 授权</td><td>一种运动过程中异常心电信号的识别方法</td><td>ZL202210114479.6</td><td>王宏洲，陈建怡，周志雄</td></tr>
+                                <tr><td>2024.07.30 申请</td><td>一种基于二维图线性正则变换的图数据压缩方法</td><td>CN202411031775.5</td><td>陈建怡，李炳照</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+                <div class="content-en">
+                    <h2 class="page-title">Papers and Patents</h2>
+                    <h3 class="news-year">Publications</h3>
+                    <p class="papers-intro">10 first-author journal papers in <em>IEEE Transactions on Signal Processing</em>, <em>IEEE Transactions on Signal and Information Processing over Networks</em>, <em>Signal Processing</em>, <em>Digital Signal Processing</em>, and other venues, plus 2 conference papers. Full list on <a href="https://scholar.google.com/citations?user=m2oUEgwAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>.</p>
+                    <div class="paper-item">
+                        <span class="paper-index">1</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Graph linear canonical transform: Definition, vertex-frequency analysis and filter design</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong>, Yu Zhang and Bing-Zhao Li. <span class="paper-venue">IEEE Transactions on Signal Processing</span>, 2024, 72: 5691-5707.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">2</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Hyper-differential operator-based graph fractional Fourier transform: Novel approaches and applications</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">IEEE Transactions on Signal and Information Processing over Networks</span>, 2026, 12: 411-423.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">3</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Operator-based graph linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Journal of the Franklin Institute</span>, 2025, 362: 107877.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">4</span>
+                        <div class="paper-body">
+                            <p class="paper-title">The short-time Wigner-Ville distribution</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Signal Processing</span>, 2024, 219: 109402.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">5</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Wigner distribution associated with linear canonical transform of generalized 2-D analitic signals</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Digital Signal Processing</span>, 2024, 149: 104481.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">6</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Multi-dimensional graph linear canonical transform and Its Application</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Digital Signal Processing</span>, 2025, 163: 105222.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">7</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Parametric quaternion Wigner-Ville distribution: Definition, uncertainty principles, and application</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Signal, Image and Video Processing</span>, 2025, 19(5): 359.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">8</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Parametric monogenic linear canonical wavelet transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Circuits, Systems, and Signal Processing</span>, 44: 7070-7091.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">9</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Graph fractional Hilbert transform, analytic signal, and its application to ECG classification</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">Circuits, Systems, and Signal Processing</span>, 2026. (ONLINE)</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">10</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Fast numerical calculation of the offset linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. <span class="paper-venue">J. Opt. Soc. Am. A</span>, 2023, 40: 427-442.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">11</span>
+                        <div class="paper-body">
+                            <p class="paper-title">The short-time Wigner-Ville distribution associated with linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. In Proceedings of <span class="paper-venue">ICSPS 2023</span>, Xi'an, China, 5 pages.</p>
+                        </div>
+                    </div>
+                    <div class="paper-item">
+                        <span class="paper-index">12</span>
+                        <div class="paper-body">
+                            <p class="paper-title">Riesz transform associated with the linear canonical transform</p>
+                        <p class="paper-meta"><strong>Jianyi Chen</strong> and Bing-Zhao Li. In Proceedings of <span class="paper-venue">IVSP 2024</span>, Ikuta, Japan, 7 pages.</p>
+                        </div>
+                    </div>
+                    <h3 class="news-year">Patents</h3>
+                    <p class="papers-intro">1 granted invention patent and 1 application.</p>
+                    <div class="patent-table-wrap">
+                        <table class="patent-table">
+                            <thead>
+                                <tr><th>Date</th><th>Title</th><th>Number</th><th>Inventors</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Granted 2024.04.09</td><td>A method for identifying abnormal ECG signals during motion</td><td>ZL202210114479.6</td><td>Hongzhou Wang, Jianyi Chen, Zhixiong Zhou</td></tr>
+                                <tr><td>Filed 2024.07.30</td><td>A graph data compression method based on two-dimensional graph linear canonical transform</td><td>CN202411031775.5</td><td>Jianyi Chen, Bing-Zhao Li</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-    <!-- 页脚 -->
-    <footer class="footer">
+            <!-- 5. 实习与实践 -->
+            <section id="section-experience" class="page-section">
+                <div class="content-zh">
+                    <h2 class="page-title">实习与实践</h2>
+                    <h3 class="news-year">实习经历</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2026.01 – 2026.05 · 算法实习生</p>
+                        <p class="news-content"><strong>联想集团 AI Technology Center</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>开展面向多 agent 编排的 benchmark 研究，撰写论文 <em>MACRO: A Benchmark for Clarification-Aware Multi-Agent Orchestration</em>。</li>
+                            <li>该论文投稿 EMNLP 已被接收。</li>
+                        </ul>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2021.01 – 2021.09 · 算法实习生</p>
+                        <p class="news-content"><strong>北京世纪未来教育科技有限公司</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>从事知识追踪领域的算法研究，重点在于使用 EM 算法和 MCMC 方法推导并实现 IRT 与 DINA 模型。</li>
+                            <li>深入学习基于深度学习的前沿知识追踪方法，并成功复现 EKT 模型以评估学生知识状态，实现网络教育流量分层业务需求建模。</li>
+                        </ul>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2020.09 – 2020.11 · 数据分析实习生</p>
+                        <p class="news-content"><strong>中国软件国际有限公司</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>主要参与开发「纽约出租车大数据分析系统」，负责数据库查询与处理、MapReduce 计算、Echarts 可视化分析、前端搭建以及任务协调等工作。</li>
+                        </ul>
+                    </div>
+                    <h3 class="news-year">实践经历</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2018.09 – 2018.12 · 数学建模协会主席</p>
+                        <p class="news-content">协助教师组织竞赛、提供课程培训并进行线上宣传；负责协调管理协会各部门的整体运营。</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2017.01 – 2017.03 · AIESEC · 国际志愿者</p>
+                        <p class="news-content">曾前往阿塞拜疆首都巴库，参与 AIESEC 国际志愿者项目「TEACH MY OWN LANGUAGE」。</p>
+                    </div>
+                </div>
+                <div class="content-en">
+                    <h2 class="page-title">Internships &amp; Practice</h2>
+                    <h3 class="news-year">Internships</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2026.01 – 2026.05 · Algorithm Intern</p>
+                        <p class="news-content"><strong>Lenovo AI Technology Center</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>Conducted research on multi-agent orchestration benchmarks and authored <em>MACRO: A Benchmark for Clarification-Aware Multi-Agent Orchestration</em>.</li>
+                            <li>The paper was submitted to EMNLP and has been accepted.</li>
+                        </ul>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2021.01 – 2021.09 · Algorithm Intern</p>
+                        <p class="news-content"><strong>Beijing Century Future Education Technology Co., Ltd.</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>Researched knowledge tracing algorithms, deriving and implementing IRT and DINA models with EM and MCMC.</li>
+                            <li>Studied deep-learning knowledge tracing methods and reproduced the EKT model to estimate student knowledge states for stratified online-education traffic modeling.</li>
+                        </ul>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2020.09 – 2020.11 · Data Analysis Intern</p>
+                        <p class="news-content"><strong>Chinasoft International Limited</strong></p>
+                        <ul class="list-plain news-card-list">
+                            <li>Contributed to the New York Taxi Big Data Analysis System, including database queries, MapReduce computation, ECharts visualization, front-end development, and task coordination.</li>
+                        </ul>
+                    </div>
+                    <h3 class="news-year">Practice</h3>
+                    <div class="news-event-card">
+                        <p class="news-date">2018.09 – 2018.12 · President, Mathematical Modeling Association</p>
+                        <p class="news-content">Assisted faculty in organizing contests, providing training, and online publicity; coordinated overall operations across association departments.</p>
+                    </div>
+                    <div class="news-event-card">
+                        <p class="news-date">2017.01 – 2017.03 · AIESEC International Volunteer</p>
+                        <p class="news-content">Participated in the AIESEC project “TEACH MY OWN LANGUAGE” in Baku, Azerbaijan.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer">
         <div class="container">
-            <p>© 陈建怡. 保留所有权利. | 最后更新: <span id="lastUpdate"></span></p>
-            <a href="#home" class="back-to-top">返回顶部</a>
+            <p>© 陈建怡 (Jianyi Chen). 最后更新：2026年8月</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        (function() {
+            var btnZh = document.getElementById('btn-zh');
+            var btnEn = document.getElementById('btn-en');
+            var navItems = document.querySelectorAll('.nav-item[data-zh][data-en]');
+            var sections = document.querySelectorAll('.page-section');
+            var zhTitles = {
+                'zh': '陈建怡 (Jianyi Chen) - 河北工业大学理学院 讲师',
+                'en': 'Jianyi Chen (陈建怡) - Lecturer, School of Science, Hebei University of Technology'
+            };
+            var pageToSection = {
+                'basic': 'section-basic',
+                'news': 'section-news',
+                'projects': 'section-projects',
+                'papers': 'section-papers',
+                'experience': 'section-experience'
+            };
+
+            function setLang(lang) {
+                document.body.classList.toggle('lang-en', lang === 'en');
+                document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+                document.title = zhTitles[lang];
+                btnZh.classList.toggle('active', lang === 'zh');
+                btnEn.classList.toggle('active', lang === 'en');
+                navItems.forEach(function(a) {
+                    a.textContent = a.getAttribute(lang === 'zh' ? 'data-zh' : 'data-en');
+                });
+            }
+
+            function showPage(pageId) {
+                var targetId = pageToSection[pageId] || 'section-basic';
+                sections.forEach(function(s) {
+                    s.classList.toggle('active', s.id === targetId);
+                });
+                navItems.forEach(function(a) {
+                    a.classList.toggle('active', a.getAttribute('data-page') === pageId);
+                });
+                window.location.hash = pageId || 'basic';
+            }
+
+            function getPageFromHash() {
+                var hash = (window.location.hash || '#basic').replace('#', '');
+                return pageToSection[hash] ? hash : 'basic';
+            }
+
+            navItems.forEach(function(a) {
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showPage(a.getAttribute('data-page'));
+                });
+            });
+
+            window.addEventListener('hashchange', function() {
+                showPage(getPageFromHash());
+            });
+
+            if (window.location.hash) {
+                showPage(getPageFromHash());
+            }
+
+            btnZh.addEventListener('click', function() { setLang('zh'); });
+            btnEn.addEventListener('click', function() { setLang('en'); });
+        })();
+    </script>
 </body>
 </html>
-
